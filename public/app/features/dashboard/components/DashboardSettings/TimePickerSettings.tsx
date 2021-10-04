@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Input, TimeZonePicker, Field, Switch, CollapsableSection } from '@grafana/ui';
-import { rangeUtil, TimeZone } from '@grafana/data';
+import { Input, TimeZonePicker, Field, Switch, CollapsableSection, WeekStartPicker } from '@grafana/ui';
+import { rangeUtil, TimeZone, WeekStart } from '@grafana/data';
 import { isEmpty } from 'lodash';
 import { selectors } from '@grafana/e2e-selectors';
 import { AutoRefreshIntervals } from './AutoRefreshIntervals';
 
 interface Props {
+  onWeekStartChange: (weekStart: WeekStart) => void;
   onTimeZoneChange: (timeZone: TimeZone) => void;
   onRefreshIntervalChange: (interval: string[]) => void;
   onNowDelayChange: (nowDelay: string) => void;
@@ -15,6 +16,7 @@ interface Props {
   timePickerHidden: boolean;
   nowDelay: string;
   timezone: TimeZone;
+  weekStart: WeekStart;
   liveNow: boolean;
 }
 
@@ -56,6 +58,13 @@ export class TimePickerSettings extends PureComponent<Props, State> {
     this.props.onTimeZoneChange(timeZone);
   };
 
+  onWeekStartChange = (weekStart?: string) => {
+    if (typeof weekStart !== 'string') {
+      return;
+    }
+    this.props.onWeekStartChange(weekStart);
+  };
+
   render() {
     return (
       <CollapsableSection label="Time options" isOpen={true}>
@@ -66,6 +75,9 @@ export class TimePickerSettings extends PureComponent<Props, State> {
             onChange={this.onTimeZoneChange}
             width={40}
           />
+        </Field>
+        <Field label="Week start" aria-label={selectors.components.WeekStartPicker.container}>
+          <WeekStartPicker width={40} value={this.props.weekStart} onChange={this.onWeekStartChange} />
         </Field>
         <AutoRefreshIntervals
           refreshIntervals={this.props.refreshIntervals}

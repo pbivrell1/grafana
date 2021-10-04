@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { TimeZone } from '@grafana/data';
+import { TimeZone, WeekStart } from '@grafana/data';
 import { CollapsableSection, Field, Input, RadioButtonGroup, TagsInput } from '@grafana/ui';
 import { selectors } from '@grafana/e2e-selectors';
 import { FolderPicker } from 'app/core/components/Select/FolderPicker';
@@ -64,6 +64,11 @@ export function GeneralSettingsUnconnected({ dashboard, updateTimeZone }: Props)
     updateTimeZone(timeZone);
   };
 
+  const onWeekStartChange = (weekStart: WeekStart) => {
+    dashboard.weekStart = weekStart;
+    setRenderCounter(renderCounter + 1);
+  };
+
   const onTagsChange = (tags: string[]) => {
     dashboard.tags = tags;
     setRenderCounter(renderCounter + 1);
@@ -115,6 +120,7 @@ export function GeneralSettingsUnconnected({ dashboard, updateTimeZone }: Props)
 
       <TimePickerSettings
         onTimeZoneChange={onTimeZoneChange}
+        onWeekStartChange={onWeekStartChange}
         onRefreshIntervalChange={onRefreshIntervalChange}
         onNowDelayChange={onNowDelayChange}
         onHideTimePickerChange={onHideTimePickerChange}
@@ -123,6 +129,7 @@ export function GeneralSettingsUnconnected({ dashboard, updateTimeZone }: Props)
         timePickerHidden={dashboard.timepicker.hidden}
         nowDelay={dashboard.timepicker.nowDelay}
         timezone={dashboard.timezone}
+        weekStart={dashboard.weekStart}
         liveNow={dashboard.liveNow}
       />
 
