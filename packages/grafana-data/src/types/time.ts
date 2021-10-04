@@ -36,6 +36,8 @@ export type TimeZone = TimeZoneBrowser | TimeZoneUtc | string;
 
 export const DefaultTimeZone: TimeZone = 'browser';
 
+export type WeekStart = 'saturday' | 'sunday' | 'monday' | string;
+
 export interface TimeOption {
   from: string;
   to: string;
