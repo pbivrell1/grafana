@@ -11,14 +11,14 @@ import {
 } from './reducers';
 import { notifyApp } from 'app/core/actions';
 import { loadPanelPlugin } from 'app/features/plugins/state/actions';
-import { updateTimeZoneForSession } from 'app/features/profile/state/reducers';
+import { updateTimeZoneForSession, updateWeekStartForSession } from 'app/features/profile/state/reducers';
 // Types
 import { DashboardAcl, DashboardAclUpdateDTO, NewDashboardAclItem, PermissionLevel, ThunkResult } from 'app/types';
 import { PanelModel } from './PanelModel';
 import { cancelVariables } from '../../variables/state/actions';
 import { getPanelPluginNotFound } from '../dashgrid/PanelPluginError';
 import { getTimeSrv } from '../services/TimeSrv';
-import { TimeZone } from '@grafana/data';
+import { TimeZone, WeekStart } from '@grafana/data';
 
 export function getDashboardPermissions(id: number): ThunkResult<void> {
   return async (dispatch) => {
@@ -186,5 +186,10 @@ export const cleanUpDashboardAndVariables = (): ThunkResult<void> => (dispatch, 
 
 export const updateTimeZoneDashboard = (timeZone: TimeZone): ThunkResult<void> => (dispatch) => {
   dispatch(updateTimeZoneForSession(timeZone));
+  getTimeSrv().refreshDashboard();
+};
+
+export const updateWeekStartDashboard = (weekStart: WeekStart): ThunkResult<void> => (dispatch) => {
+  dispatch(updateWeekStartForSession(weekStart));
   getTimeSrv().refreshDashboard();
 };

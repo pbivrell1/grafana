@@ -1,4 +1,4 @@
-import { TimeZone } from '../types/time';
+import { TimeZone, WeekStart } from '../types/time';
 /* eslint-disable id-blacklist, no-restricted-imports, @typescript-eslint/ban-types */
 import moment, { Moment, MomentInput, DurationInputArg1, DurationInputArg2 } from 'moment';
 export interface DateTimeBuiltinFormat {
@@ -119,4 +119,18 @@ export const dateTimeForTimeZone = (
   }
 
   return dateTime(input, formatInput);
+};
+
+export const getDayOfTheWeek = (weekStart: WeekStart): number => {
+  const weekDays = moment.weekdays().map((d) => d.toLowerCase());
+  return weekDays.indexOf(weekStart);
+};
+
+export const setWeekStart = (weekStart: WeekStart) => {
+  const language = getLocale();
+  moment.updateLocale(language, {
+    week: {
+      dow: getDayOfTheWeek(weekStart),
+    },
+  });
 };
