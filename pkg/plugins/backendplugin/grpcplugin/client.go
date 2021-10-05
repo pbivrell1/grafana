@@ -8,6 +8,7 @@ import (
 	"github.com/grafana/grafana/pkg/plugins/backendplugin"
 	"github.com/grafana/grafana/pkg/plugins/backendplugin/pluginextensionv2"
 	goplugin "github.com/hashicorp/go-plugin"
+	"os"
 )
 
 // Handshake is the HandshakeConfig used to configure clients and servers.
@@ -28,6 +29,7 @@ func newClientConfig(executablePath string, env []string, logger log.Logger,
 	// nolint:gosec
 	cmd := exec.Command(executablePath)
 	cmd.Env = env
+	cmd.Stdout = os.Stdout
 
 	return &goplugin.ClientConfig{
 		Cmd:              cmd,
